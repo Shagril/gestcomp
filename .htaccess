@@ -1,0 +1,13 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+# Lorsque l'on tape dans la barre d'adresse www.votre_domaine.net/page-* c'est la page www.votre_domaine.net/page.php?id=* qui s'affiche
+# ^ et $ signifie respectivement le début et la fin d'une expression régulière
+RewriteRule ^([a-z-A-Z-0-9]+)$ ./index.php?page=$1 [NC,L]
+
+#RewriteEngine on
+#
+#RewriteRule ^([^/]+)$ index.php?p=$1 [L]
+#
+#RewriteRule !\.(js|ico|gif|jpg|png|css|html|swf|flv|xml)$ index.php [QSA,L]
+#RewriteRule ^([a-z][a-z])/([^/]+)$ index.php?lang=$1&page=$2 [L]
