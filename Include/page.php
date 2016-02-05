@@ -70,6 +70,13 @@
 				break;
 			
 			/*
+				On permet à un eleve d'enregister ces activités dans une situation.
+			*/
+			case 'enregistrerActivite':
+				require("Page/situation/enregistrer.php");
+				break;
+			
+			/*
 				On permet à un eleve d'accéder à sa page de modification des
 				parametres.
 			*/

@@ -1,5 +1,36 @@
-﻿<html>
+
+<html>
+<!-- code situation non gerer -->
 <script>
+function Enregistrer(){
+	var activite = new Array();
+	var ListeOption = document.getElementById(insert);
+	var l= document.getElementById("insert").length;
+		for(var i = 0; i< l;i++ )
+		{
+					if(activite.indexOf(document.activite.insert.options[i].value) == -1)
+					{
+						activite.push(document.activite.insert.options[i].value);
+					}	
+		}
+		
+		var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange=function()
+{
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	{
+		console.log(xmlhttp.responseText);
+		
+	}
+}
+xmlhttp.open("POST", "enregistrerActivite", true);
+xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xmlhttp.send("activite=" + activite);
+
+
+
+}
 function modif(){
 	var indi=document.activite.select.selectedIndex;
 	var choixa=document.activite.select.options[indi].value;
@@ -53,8 +84,7 @@ function Supprimer()
 		if (insert.options[i].selected)
 		{
 			value = insert.options[i].value;
-			//insert.options[i] = null;
-			
+
 			while (j<=document.activite.select.length-1)
 			{
 				if (document.activite.select.options[j].value == value)
@@ -76,25 +106,46 @@ function Supprimer()
 </script>
 <head></head>
 <body>
-<h1>Activites</h1>
 	<form name="activite">
 		<p>Vous sélectionnez une ou plusieurs activités du référentiel dans la liste ci-dessous afin  qu'elle(s)
-			apparaisse(nt) dans la liste des 'Activités mises en œuvre'. Les compétences correspondantes sont alors indiquées dans la liste des 'Compétences'. </p>
+			apparaisse(nt) dans la liste des "Activités mises en œuvre". Les compétences correspondantes sont alors indiquées dans la liste des "Compétences". </p>
 			
 		<p>Activités du référentiel:</p>
-		<select name="select" size="10" STYLE="width:900" onchange="modif();">';
+		
+		<select name="select" size="10" STYLE="width:900" onchange="modif();">
+		
 <?php
 	$req="SELECT codeactivite, codeprocessus, libelle FROM activite order by codeactivite";
 	$reponse = $bdd->query($req);
 	$processus = "";
+	
+	$req1="select codeactivite from mettre_en_oeuvre";
+	$reponse1=$bdd->query($req1);
+	$donnees1=$reponse1->fetchall();
 	while($donnees = $reponse->fetch())
 	{
 		if($processus != $donnees['codeprocessus'])
 		{
 			echo'<option disabled >------------------ </option>';
 		}
-		echo'<option value="'.$donnees['codeactivite'].'">'.$donnees['codeactivite']." ".$donnees['libelle'].'</option>';
 		
+		
+		$insert = false;
+		$cpt=0;
+		while($cpt < count($donnees1) && !$insert)
+		{
+			if($donnees1[$cpt]['codeactivite'] == $donnees['codeactivite'] && !$insert)
+			{
+				echo'<option disabled value="'.$donnees['codeactivite'].'">'.$donnees['codeactivite']." ".$donnees['libelle'].'</option>';
+				$insert = true;
+			}
+			$cpt++;
+		}
+		
+		if(!$insert)
+		{
+			echo'<option value="'.$donnees['codeactivite'].'">'.$donnees['codeactivite']." ".$donnees['libelle'].'</option>';
+		}
 		$processus =  $donnees['codeprocessus'];
 	}
 ?>
@@ -111,13 +162,31 @@ function Supprimer()
 	
 	<div  >
 		<select name="insert" id="insert" size="10" STYLE="width:900">
+		<?php
+	$req="SELECT codeactivite FROM mettre_en_oeuvre order by codeactivite";
+	$reponse = $bdd->query($req);
+	$processus = "";
+	while($donnees = $reponse->fetch())
+	{
+		echo'<option value="'.$donnees['codeactivite'].'">'.$donnees['codeactivite'].'</option>';
+		$req1=$bdd->prepare("SELECT codecompetence, libelle FROM competence where codeactivite= :activite");
+		$req1->execute(array (
+		'activite' => $donnees['codeactivite']));
+		while ($donnees1 = $req1->fetch())
+		{
+			echo'<option disabled value="'.$donnees['codeactivite'].'">'.$donnees1['codecompetence']." ".$donnees1['libelle'].'</option>';
+		}
+	echo'<option disabled value="'.$donnees['codeactivite'].'" >------------------ </option>';
+		
+	}
+?>
 		</select>
 	</div>
 			
 	<input type = "button" value = "Supprimer" onClick="Supprimer();"> </input> 
+	<input type = "button" value = "Enregistrer" onClick="Enregistrer();"> </input> 
 	</form>
 	</body>
 
 </html>
-
 
