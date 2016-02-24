@@ -8,6 +8,12 @@
 			*/
 			session_start();
 			
+			$_SESSION['email'] = 'etu@etu.fr';
+			$_SESSION['nom'] = 'etu';
+			$_SESSION['prenom'] = 'etu';
+			$_SESSION['avatar'] = '';
+			$_SESSION['type'] = 'Eleve';
+			
 			/*
 				On integre la fonction de connection à la base de donnée pour pouvoir l'utiliser
 				sur le site entier.

@@ -1,9 +1,7 @@
 <?php
-	/*
-		On récupère les différents paramètres de l'url qui sont séparé par des tirets
-		pour les traiter par la suite et permettre un affichage plus précis des pages.
-	*/
-	$page = explode("-", $_GET['page']);
+	
+	if(isset($_GET['page']))
+		$page = explode('-', $_GET['page']);
 	
 	/*
 		Cette page permet de définir les droits des utilisateurs.
@@ -70,10 +68,24 @@
 				break;
 			
 			/*
+				On permet à un eleve d'accéder à sa page de tableau des activités.
+			*/
+			case 'tableau':
+				require("Page/tableau.php");
+				break;
+			
+			/*
 				On permet à un eleve d'enregister ces activités dans une situation.
 			*/
 			case 'enregistrerActivite':
 				require("Page/situation/enregistrer.php");
+				break;
+				
+			/*
+				On permet à un eleve de gérer ces situations.
+			*/
+			case 'listeSituation':
+				require("Page/listeSituation.php");
 				break;
 			
 			/*

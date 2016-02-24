@@ -12,18 +12,19 @@
 	VALUES(:libelle,:description,:contexte,:codeloc,:codesource,:codecadre,:codetypesituation,:datedebut,:datefin,:environnementtechnologique,:moyens,:avispersonnel)');
  
 	$req->execute(array(
-	'libelle'=> $_POST['libelle'],
-	'description' => $_POST['description'],
-	'contexte' => $_POST['contexte'],
-	'codeloc' => $_POST['codeloc'],
-	'codesource' => $_POST['codesource'],
-	'codecadre' => $_POST['codecadre'],
-	'codetypesituation' => $_POST['codetypesituation'],
-	'datedebut' => $_POST['datedebut'],
-	'datefin' => $_POST['datefin'],
-	'environnementtechnologique' => $_POST['environnementtechnologique'],
-	'moyens' => $_POST['moyens'],
-	'avispersonnel' => $_POST['avispersonnel']));
+		'libelle'=> $_POST['libelle'],
+		'description' => $_POST['description'],
+		'contexte' => $_POST['contexte'],
+		'codeloc' => $_POST['codeloc'],
+		'codesource' => $_POST['codesource'],
+		'codecadre' => $_POST['codecadre'],
+		'codetypesituation' => $_POST['codetypesituation'],
+		'datedebut' => $_POST['datedebut'],
+		'datefin' => $_POST['datefin'],
+		'environnementtechnologique' => $_POST['environnementtechnologique'],
+		'moyens' => $_POST['moyens'],
+		'avispersonnel' => $_POST['avispersonnel']
+	));
 	
 	echo 'La Situation a bien été ajoutée.';
 ?>

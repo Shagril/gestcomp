@@ -1,5 +1,7 @@
 ﻿<?php
 
+	$user = $page[1];
+
 	$db = db_connect();
 
 	$query = $db->prepare("SELECT mailLogin, nom, prenom, avatar, type, estAdmin FROM vue_utilisateur WHERE LOWER(mailLogin) = LOWER(:email) AND mdp = :password");

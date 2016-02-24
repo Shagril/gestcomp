@@ -29,7 +29,7 @@
 				-->
 				<?php  if($_SESSION['type'] == "Eleve") { ?>
 				<li <?php if($_GET['page'] == 'addSituation') echo('class="active"')?>><a href="./addSituation">Nouvelle Situation<span class="sr-only"></span></a></li>
-				<li <?php if($_GET['page'] == 'modifSituation') echo('class="active"')?>><a href="./modifSituation">Gérer les Situations<span class="sr-only"></span></a></li>
+				<li <?php if($_GET['page'] == 'listeSituation') echo('class="active"')?>><a href="./listeSituation">Gérer les Situations<span class="sr-only"></span></a></li>
 				<li <?php if($_GET['page'] == 'bilan') echo('class="active"')?>><a href="./bilan">Bilan Individuel<span class="sr-only"></span></a></li>
 				<li <?php if($_GET['page'] == 'tableau') echo('class="active"')?>><a href="./tableau">Tableau de Synthèse<span class="sr-only"></span></a></li>
 				<?php } ?>
@@ -80,9 +80,9 @@
 						<ul class="dropdown-menu" role="menu">
 							<form class="form-horizontal" action="./login" method="post">
 								<h1>Connexion</h1>
-								<label for="email">Email</label>
+								<label for="email" class="sr-only">Email</label>
 								<input class="form-control" name="email" id="email" placeholder="E-Mail" type="email"></input>
-								<label for="password">Password</label>
+								<label for="password" class="sr-only">Password</label>
 								<input class="form-control" name="password" id="Password" placeholder="Password" type="password"></input>
 								<br/>
 								<input type="reset" class="btn btn-default"></input>

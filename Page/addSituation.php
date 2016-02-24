@@ -1,5 +1,11 @@
-﻿	<ul class="nav nav-tabs">
-		<li><a href="#Description" data-toggle="tab" aria-expanded="true">Description</a></li>
+﻿	
+	<?php
+		$db = db_connect();
+	?>
+	
+	
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#Description" data-toggle="tab" aria-expanded="true">Description</a></li>
 		<li><a href="#Activités" data-toggle="tab" aria-expanded="false">Activites</a></li>
 		<li><a href="#Reformuler" data-toggle="tab" aria-expanded="false">Reformuler</a></li>
 		<li><a href="#Liens" data-toggle="tab" aria-expanded="false">Liens</a></li>

@@ -37,13 +37,12 @@ function modif(){
 	document.activite.select.options[indi].disabled = true;
 switch(choixa){
 <?php
-$bdd = db_connect();
 	
 $req="SELECT codeactivite from activite";
-$reponse = $bdd->query($req);
+$reponse = $db->query($req);
 while($donnees = $reponse->fetch())
 {
-	$req1=$bdd->prepare("select libelle, codecompetence from competence where codeactivite = :activite");
+	$req1=$db->prepare("select libelle, codecompetence from competence where codeactivite = :activite");
 	$req1->execute(array (
 	'activite' => $donnees['codeactivite']
 	));
@@ -116,11 +115,11 @@ function Supprimer()
 		
 <?php
 	$req="SELECT codeactivite, codeprocessus, libelle FROM activite order by codeactivite";
-	$reponse = $bdd->query($req);
+	$reponse = $db->query($req);
 	$processus = "";
 	
 	$req1="select codeactivite from mettre_en_oeuvre";
-	$reponse1=$bdd->query($req1);
+	$reponse1=$db->query($req1);
 	$donnees1=$reponse1->fetchall();
 	while($donnees = $reponse->fetch())
 	{
@@ -164,12 +163,12 @@ function Supprimer()
 		<select name="insert" id="insert" size="10" STYLE="width:900">
 		<?php
 	$req="SELECT codeactivite FROM mettre_en_oeuvre order by codeactivite";
-	$reponse = $bdd->query($req);
+	$reponse = $db->query($req);
 	$processus = "";
 	while($donnees = $reponse->fetch())
 	{
 		echo'<option value="'.$donnees['codeactivite'].'">'.$donnees['codeactivite'].'</option>';
-		$req1=$bdd->prepare("SELECT codecompetence, libelle FROM competence where codeactivite= :activite");
+		$req1=$db->prepare("SELECT codecompetence, libelle FROM competence where codeactivite= :activite");
 		$req1->execute(array (
 		'activite' => $donnees['codeactivite']));
 		while ($donnees1 = $req1->fetch())
