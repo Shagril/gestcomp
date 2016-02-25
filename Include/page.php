@@ -12,7 +12,7 @@
 	*/
 	if(!isset($_SESSION['type']))
 	{
-		switch($page[0])
+		switch($_GET['page'])
 		{
 			/*
 				On permet d'accéder à la page d'accueil.
@@ -40,7 +40,7 @@
 	*/
 	else if($_SESSION['type'] == "Eleve")
 	{
-		switch($page[0])
+		switch($_GET['page'])
 		{
 			/*
 				On permet d'accéder à la d'accueil spécifique aux eleves.
@@ -109,7 +109,7 @@
 	*/
 	else if($_SESSION['type'] == "Prof")
 	{
-		switch($page[0])
+		switch($_GET['page'])
 		{
 			/*
 				On permet l'accès à la page d'accueil spécifique aux profs, qu'il soit admin ou pas.
@@ -160,11 +160,8 @@
 				administrateur.
 			*/
 			case 'settings':
-				if($_SESSION['estAdmin'])
-					require("Page/settings-prof.php");
-				else
-					require("Page/settings-admin.php");
-				break;
+				require("Page/settings-prof.php");
+				
 			/*
 				Si la page demandé n'existe pas dans les droits de l'utilisateur
 				alors on lui dit que la page n'existe pas (Erreur: 404).
@@ -177,7 +174,7 @@
 	}
 	else if($_SESSION['type'] == 'Admin')
 	{
-		switch($page[0])
+		switch($_GET['page'])
 		{
 			/*
 				On permet l'accès à la page d'accueil spécifique aux profs, qu'il soit admin ou pas.
