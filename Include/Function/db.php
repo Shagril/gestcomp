@@ -1,7 +1,6 @@
 <?php
 	function db_connect() 
 	{
-		echo($_SERVER['SERVER_NAME']);
 		try
 		{
 			if($_SERVER['SERVER_NAME'] == 'gestcomp.shagril.tk')
