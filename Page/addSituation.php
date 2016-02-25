@@ -38,3 +38,4 @@
 			?>
 		</div>
 	</div>
+	<button onClick="saveSituation()">Enregistrer</button>
