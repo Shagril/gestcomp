@@ -1,3 +1,3 @@
-<?php
-	require_once('Include/nav.php');
+<?php
+	require_once('Include/nav.php');
 ?>

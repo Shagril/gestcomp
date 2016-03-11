@@ -1,12 +1,12 @@
-@CHARSET "ISO-8859-1";
-
-@media(min-width: 768px)
-{
-	/* le fond d'écran du site */
-	body
-	{
-		background: url(../img/background/screen.jpg) fixed;
-        border: 3px;
-	}
-	
-}
+@CHARSET "ISO-8859-1";
+
+@media(min-width: 768px)
+{
+	/* le fond d'écran du site */
+	body
+	{
+		background: url(../img/background/screen.jpg) fixed;
+        border: 3px;
+	}
+	
+}

@@ -1,17 +1,17 @@
-@CHARSET "ISO-8859-1";
-
-@media(max-width: 767px)
-{
-    /* le fond d'écran du site */
-	body
-	{
-		background: url(../img/background/) fixed;
-	}
-    
-    /* Corps du site */
-	.jumbotron
-	{
-	    padding-top: 0px;
-	    padding-bottom: 0px;
-	}
-}
+@CHARSET "ISO-8859-1";
+
+@media(max-width: 767px)
+{
+    /* le fond d'écran du site */
+	body
+	{
+		background: url(../img/background/) fixed;
+	}
+    
+    /* Corps du site */
+	.jumbotron
+	{
+	    padding-top: 0px;
+	    padding-bottom: 0px;
+	}
+}
