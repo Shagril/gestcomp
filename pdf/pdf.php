@@ -4,14 +4,9 @@ session_start();
 
 	
 require('rotation.php');
-try
-	{
-		$bdd = new PDO('mysql:host=127.0.0.1;dbname=gestcomp','root','');
-	}
-	catch(Exception $e)
-	{
-		die('Erreur : '.$e->getMessage());
-	}
+	include_once('../Include/Function/db.php');
+	
+	$bdd = db_connect
 	
 	
 	if(isset($_SESSION['mail']))
