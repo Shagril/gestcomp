@@ -6,7 +6,7 @@ session_start();
 require('rotation.php');
 	include_once('../Include/Function/db.php');
 	
-	$bdd = db_connect;
+	$bdd = db_connect();
 	
 	
 	if(isset($_SESSION['mail']))
