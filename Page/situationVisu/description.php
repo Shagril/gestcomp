@@ -7,16 +7,16 @@
 	</script>
 	<form action="addSituation" method="post" id="description">
 		<label for="libelle">Libelle court *:</label>
-		<input type="text" name="libelle" id="libelle" class="fields" value="<?php echo $libelle ?>" required/><br><br>
+		<input type="text" name="libelle" id="libelle" class="fields" value="<?php echo $libelle ?>" disabled/><br><br>
 		
 		<label for="description">Description *:</label>
-		<input type="text" name="description" id="description" class="fields" value="<?php echo $description ?>" required/><br><br>
+		<input type="text" name="description" id="description" class="fields" value="<?php echo $description ?>" disabled/><br><br>
 		
 		<label for="contexte">Contexte :</label>
-		<input type="text" name="contexte" id="contexte" class="fields" value="<?php echo $contexte ?>"/><br><br>
+		<input type="text" name="contexte" id="contexte" class="fields" value="<?php echo $contexte ?>" disabled/><br><br>
 		
 		<label for="codeloc">Localisation</label>
-		<select name="codeloc" id="codeloc" class="fields">
+		<select name="codeloc" id="codeloc" class="fields" disabled>
 		<?php
 			$req = $db->prepare('SELECT codeloc, libelle FROM localisation'); 
 			$req->execute();	
@@ -36,7 +36,7 @@
 		</select>
 		
 		<label for="codesource">Source</label>
-		<select name="codesource" id="codesource" class="fields">
+		<select name="codesource" id="codesource" class="fields" disabled>
 		<?php
 			$req = $db->prepare('SELECT codesource, libelle FROM source'); 
 			$req -> execute();	
@@ -56,7 +56,7 @@
 		</select>
 		
 		<label for="codecadre">Cadre</label>
-		<select name="codecadre" id="codecadre" class="fields">
+		<select name="codecadre" id="codecadre" class="fields" disabled>
 		<?php
 			$req = $db->prepare('SELECT codecadre, libelle FROM situation_cadre'); 
 			$req -> execute();	
@@ -76,7 +76,7 @@
 		</select>
 		
 		<label for="codetypesituation">Type</label>
-		<select name="codetypesituation" id="codetypesituation" class="fields">
+		<select name="codetypesituation" id="codetypesituation" class="fields" disabled>
 		<?php
 			$req = $db->prepare('SELECT codetypesituation, libelle FROM type_situation'); 
 			$req -> execute();	
@@ -96,22 +96,22 @@
 		</select><br><br>
 		
 		<label for="datedebut">Date Début :</label>
-		<input type="date" name="datedebut" id="datedebut" class="fields" value="<?php echo $dateDebut ?>"/><br><br>
+		<input type="date" name="datedebut" id="datedebut" class="fields" value="<?php echo $dateDebut ?>" disabled/><br><br>
 		<label for="datefin">Date Fin :</label>
-		<input type="date" name="datefin" id="datefin" class="fields" value="<?php echo $dateFin ?>"/><br><br>
+		<input type="date" name="datefin" id="datefin" class="fields" value="<?php echo $dateFin ?>" disabled/><br><br>
 		
 		<label for="environnementtechnologique">Environnement technologique :</label>
-		<input type="text" name="environnementtechnologique" id="environnementtechnologique" class="fields" value="<?php echo $environnementTechnologique ?>"/><br><br>
+		<input type="text" name="environnementtechnologique" id="environnementtechnologique" class="fields" value="<?php echo $environnementTechnologique ?>" disabled/><br><br>
 		
 		<label for="moyens">Moyens :</label>
-		<input type="text" name="moyens" id="moyens" class="fields" value="<?php echo $moyens ?>"/><br><br>
+		<input type="text" name="moyens" id="moyens" class="fields" value="<?php echo $moyens ?>" disabled/><br><br>
 		
 		<label for="avispersonnel">Avis personnel :</label>
-		<input type="text" name="avispersonnel" id="avispersonnel" class="fields" value="<?php echo $avisPersonnel ?>"/><br><br>
+		<input type="text" name="avispersonnel" id="avispersonnel" class="fields" value="<?php echo $avisPersonnel ?>" disabled/><br><br>
 		<div id="div">
 		<label>Est-ce une situation obligatoire ?</label>
-		<input type="radio" name="bradio" onclick="radioclick(1);"/> Oui
-		<input type="radio" name="bradio" checked="checked" onclick="radioclick(2);"/> Non <br><br>
+		<input type="radio" name="bradio" onclick="radioclick(1);" disabled/> Oui
+		<input type="radio" name="bradio" checked="checked" onclick="radioclick(2);" disabled/> Non <br><br>
 		</div>
 		
 		<div id="obligatoire" style="display:none">
@@ -120,7 +120,7 @@
 			$req -> execute();	
 			while ($donnees = $req->fetch())
 			{
-				echo '<input type="checkbox" name="typologie[]" value="'.$donnees['CODEOBLIGATIONSITUATION'].'">'.$donnees['libelle'].'<br>';
+				echo '<input type="checkbox" name="typologie[]" value="'.$donnees['CODEOBLIGATIONSITUATION'].'" disabled>'.$donnees['libelle'].'<br>';
 			}
 		?>
 		
@@ -130,5 +130,5 @@
 		
 		<label>*Champ(s) obligatoire(s)  </label>
 		</br>
-		<button type="submit" form="description" value="Submit">Enregistrer</button>
+
 	</form>

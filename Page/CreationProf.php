@@ -1,26 +1,1 @@
-﻿<?php
-
-	$bdd = db_connect();
-	
-	$req = 'SELECT nom, codepromotion from promotion ';
-	$reponse = $bdd->query($req) or die(print_r($bdd->errorInfo()));
-	echo '<html>
-				<form name="" method="POST" action="./CreationProf">
-				email:<input type="email" name="email" placeholder="email" /></br>
-				nom:<input type="text" name="nom" placeholder="nom" /></br>
-				prenom:<input type="text" name="prenom" placeholder="prenom" /></br>
-				admin:<input type="checkbox" name="admin"></br>
-				Promotion(s) ou intervient le professeur :</br>';
-				
-				
-	while ($donnees = $reponse->fetch())
-	{
-		echo $donnees['nom'].'<input type="checkbox" name="chk[]" value="'.$donnees['codepromotion'].'">';
-	}
-	
-	
-	echo'</select></br>
-		<input type="submit" name="valider" value="valider" />
-		</form>
-		</html>';
-?>
+﻿<?php	$bdd = db_connect();	if(isset($_POST['email']))	{		$req = $bdd->prepare('INSERT INTO utilisateur(maillogin, nom, prenom, mdp) VALUES (:email, :nom, :prenom, SHA1(:mdp))');	$req -> execute(array(		'email' => $_POST['email'],		'nom' => $_POST['nom'],		'prenom' => $_POST['prenom'],				'mdp' => "mdpdebase",		));				if (isset($_POST['admin']))		{			$admin = true;		}		else		{			$admin = false;		}			$req = $bdd->prepare('INSERT INTO professeur(maillogin, estadministrateur) VALUES (:email, :administrateur)');	$req -> execute(array(		 'email' => $_POST['email'],		 'administrateur' => $admin		 ));			if(isset($_POST['chk']))	{	foreach ($_POST['chk'] as $value)	{	$req = $bdd->prepare('INSERT INTO encadrer(codepromotion, maillogin) VALUES (:code,:email)');	$req -> execute(array(		'code' => $value,		'email' => $_POST['email'],		));	}	}	}		$req = 'SELECT nom, codepromotion from promotion ';	$reponse = $bdd->query($req) or die(print_r($bdd->errorInfo()));	echo '<html>				<form name="" method="POST" action="creerProf">				email:<input type="email" name="email" placeholder="email" required/></br>				nom:<input type="text" name="nom" placeholder="nom" required/></br>				prenom:<input type="text" name="prenom" placeholder="prenom" required/></br>				admin:<input type="checkbox" name="admin"></br>				Promotion(s) ou intervient le professeur :</br>';									while ($donnees = $reponse->fetch())	{		echo $donnees['nom'].'<input type="checkbox" name="chk[]" value="'.$donnees['codepromotion'].'">';	}			echo'</select></br>		<input type="submit" name="valider" value="valider" />		</form>		</html>';?>

@@ -45,7 +45,7 @@ if(!isset($_POST['envoi']))
 			<tr>
 				<td>
 					<div class="centrer">
-						<input type="hidden" name="user" value="">
+						<input type="hidden" name="user" value="<?php echo($utilisateur) ?>">
 						<input type="submit" name="envoi" value="Enregistrer">
 					</div>
 				</td>
@@ -106,12 +106,12 @@ else
 	// if($uploadAvatar)
 	// {
 		// $stringSql .= ', avatar = '.addslashes($fichier);
-		
+		 
 	// }
 	
 	$stringSql .= ' WHERE mailLogin = :utilisateur';
 	
 	$req = $bdd->prepare($stringSql);
-	$req -> execute($array);
+	$req -> execute($array);	print_r($stringSql);
 }
 ?>

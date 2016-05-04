@@ -1,5 +1,8 @@
- 
-<?php
+ <?php
+session_start();
+
+
+	
 require('rotation.php');
 try
 	{
@@ -10,12 +13,67 @@ try
 		die('Erreur : '.$e->getMessage());
 	}
 	
+	
+	if(isset($_SESSION['mail']))
+	{
+		$email = $_SESSION['mail'];
+		unset($_SESSION['mail']);
+		$req='select nom, prenom from utilisateur where maillogin="'.$email.'"';
+		//echo $req;
+		$reponse = $bdd->query($req);
+		$donnees = $reponse->fetch();
+		$nom=$donnees['nom'];
+		$prenom=$donnees['prenom'];
+
+	}
+	else
+	{
+		$email = $_SESSION['email'];
+		$nom=$_SESSION['nom'];
+		$prenom=$_SESSION['prenom'];
+	}
+
+		
+	
+		$req='select libelle, numeroINE from parcours p, promotion pro, etudiant etu where maillogin="'.$email.'" and etu.codepromotion=pro.codepromotion and pro.codeparcours=p.codeparcours';
+		$reponse = $bdd->query($req);
+		$donnees = $reponse->fetch();
+		$parcours = $donnees['libelle'];
+		$numeroINE = $donnees['numeroINE'];
+		
+		
+		
 		$req ='select a.CODEACTIVITE, a.LIBELLE as LibelleActivite, a.CODEPROCESSUS,p.LIBELLE as LibelleProcessus from activite a, processus p where a.CODEPROCESSUS=p.CODEPROCESSUS order by a.CODEACTIVITE';
 		$reponse = $bdd->query($req);
 		$ligne=0;
 		while($donnees = $reponse->fetch())//je place les données de la requette dans un tableau pour pouvoir les manipuler
 		{
 			$rows[$ligne++] = $donnees;
+		}
+		
+		$req ='select count(codeactivite) as nbRef , codeactivite from mettre_en_oeuvre m, situation s where codeutilisateur="'.$email.'" and s.codesituation=m.codesituation group by m.codeactivite';
+		$reponse = $bdd->query($req);
+		$ligne=0;
+		while($donnees = $reponse->fetch())//je place les données de la requette dans un tableau pour pouvoir les manipuler
+		{
+			$rowsRef[$ligne++] = $donnees;
+		}
+		
+		$req ='select libelle, CODEOBLIGATIONSITUATION from situation_obligatoire';
+		$reponse = $bdd->query($req);
+		$ligne=0;
+		while($donnees = $reponse->fetch())//je place les données de la requette dans un tableau pour pouvoir les manipuler
+		{
+			$rowsObligatoire[$ligne++] = $donnees;
+		}
+		
+		$req ='select count(si.codesituation) as nbRef, codeobligationsituation from situation s, situationobligatoire si where codeutilisateur="'.$email.'" and s.codesituation=si.codesituation group by si.codeobligationsituation';
+		//print_r($req);
+		$reponse = $bdd->query($req);
+		$ligne=0;
+		while($donnees = $reponse->fetch())//je place les données de la requette dans un tableau pour pouvoir les manipuler
+		{
+			$rowsObligatoireRef[$ligne++] = $donnees;
 		}
 		// echo "<pre>";
 		// print_r($rows);
@@ -46,7 +104,7 @@ $pdf->RotatedText(15,11,utf8_decode('Je soussigné-e                            
 $pdf->SetFont('Arial','',14);
 $pdf->RotatedText(200,50,utf8_decode('BTS SERVICES INFORMATIQUES AUX ORGANISATIONS-TABLEAU DE SYNTHESE'),-90);
 $pdf->SetFont('Arial','',12);
-$pdf->RotatedText(180,35,utf8_decode('Nom et prénom du candidat:CHASSAT Alexis                     Parcours:SLAM                     Numéro du candidat:'),-90);
+$pdf->RotatedText(180,35,utf8_decode('Nom et prénom du candidat: '.$nom.' '.$prenom.'                    Parcours: '.$parcours.'                     Numéro du candidat: '.$numeroINE),-90);
 $pdf->SetFont('Arial','',5);
 $pdf->SetX(30);
 $pdf->Cell(15,4,'',1,0,'');
@@ -56,35 +114,37 @@ $pdf->SetDrawColor(0, 0, 0);
 $pdf->Cell(60,4,'',1,0,'');
 $pdf->RotatedText(140,11,'Situation obligatoire',-90);
 $pdf->Cell(20,16,'',1,0,'');
+$i=0;
+foreach($rowsObligatoire as $data)
+{
+	
+		$i=$i+1;
+		$pdf->SetX(30);
+		$ref=false;
+		foreach($rowsObligatoireRef as $data1)
+		{
+			if($data['CODEOBLIGATIONSITUATION']==$data1['codeobligationsituation'] and $data1['nbRef']>0)
+			{	
+				$ref=true;
+			}
+		}
+
+		if($ref)
+		{
+			$pdf->Cell(15,4,'X',1,0,'');
+		}
+		else
+		{
+			$pdf->Cell(15,4,'',1,0,'');	
+		}
+		
+		$pdf->SetDrawColor(235 , 235 , 235 );
+		$pdf->Cell(25,4,'',1,0,'');
+		$pdf->SetDrawColor(0, 0, 0);
+		$pdf->Cell(60,4,$data['libelle'],1,1,'');
+}
 
 
-$pdf->SetX(30);
-$pdf->Cell(15,4,'',1,0,'');
-$pdf->SetDrawColor(235 , 235 , 235 );
-$pdf->Cell(25,4,'',1,0,'');
-$pdf->SetDrawColor(0, 0, 0);
-$pdf->Cell(60,4,'',1,1,'');
-
-$pdf->SetX(30);
-$pdf->Cell(15,4,'',1,0,'');
-$pdf->SetDrawColor(235 , 235 , 235 );
-$pdf->Cell(25,4,'',1,0,'');
-$pdf->SetDrawColor(0, 0, 0);
-$pdf->Cell(60,4,'',1,1,'');
-
-$pdf->SetX(30);
-$pdf->Cell(15,4,'',1,0,'');
-$pdf->SetDrawColor(235 , 235 , 235 );
-$pdf->Cell(25,4,'',1,0,'');
-$pdf->SetDrawColor(0, 0, 0);
-$pdf->Cell(60,4,'',1,1,'');
-
-$pdf->SetX(30);
-$pdf->Cell(15,4,'',1,0,'');
-$pdf->SetDrawColor(235 , 235 , 235 );
-$pdf->Cell(25,4,'',1,0,'');
-$pdf->SetDrawColor(0, 0, 0);
-$pdf->Cell(60,4,'',1,1,'');
 
 
 
@@ -98,7 +158,23 @@ foreach($rows as $data)
 		$processus=$data['LibelleProcessus'];
 		$i=$i+1;
 		$pdf->SetX(30);
-		$pdf->Cell(15,4,'',1,0,'');
+		$ref=false;
+		foreach($rowsRef as $data1)
+		{
+			if($data['CODEACTIVITE']==$data1['codeactivite'] and $data1['nbRef']>0)
+			{	
+				$ref=true;
+			}
+		}
+		if($ref)
+		{
+			$pdf->Cell(15,4,'X',1,0,'');
+		}
+		else
+		{
+			$pdf->Cell(15,4,'',1,0,'');
+		}
+		
 		$pdf->SetDrawColor(235 , 235 , 235 );
 		$pdf->Cell(25,4,'',1,0,'');
 		$pdf->SetDrawColor(0, 0, 0);
@@ -123,7 +199,23 @@ foreach($rows as $data)
 		$processus=$data['LibelleProcessus'];
 		$i=$i+1;
 		$pdf->SetX(30);
-		$pdf->Cell(15,4,'',1,0,'');
+		$ref=false;
+		foreach($rowsRef as $data1)
+		{
+			if($data['CODEACTIVITE']==$data1['codeactivite'] and $data1['nbRef']>0)
+			{	
+				$ref=true;
+			}
+		}
+		if($ref)
+		{
+			$pdf->Cell(15,4,'X',1,0,'');
+		}
+		else
+		{
+			$pdf->Cell(15,4,'',1,0,'');
+		}
+		
 		$pdf->SetDrawColor(235 , 235 , 235 );
 		$pdf->Cell(25,4,'',1,0,'');
 		$pdf->SetDrawColor(0, 0, 0);
@@ -148,7 +240,23 @@ foreach($rows as $data)
 		$processus=$data['LibelleProcessus'];
 		$i=$i+1;
 		$pdf->SetX(30);
-		$pdf->Cell(15,4,'',1,0,'');
+		$ref=false;
+		foreach($rowsRef as $data1)
+		{
+			if($data['CODEACTIVITE']==$data1['codeactivite'] and $data1['nbRef']>0)
+			{	
+				$ref=true;
+			}
+		}
+		if($ref)
+		{
+			$pdf->Cell(15,4,'X',1,0,'');
+		}
+		else
+		{
+			$pdf->Cell(15,4,'',1,0,'');
+		}
+		
 		$pdf->SetDrawColor(235 , 235 , 235 );
 		$pdf->Cell(25,4,'',1,0,'');
 		$pdf->SetDrawColor(0, 0, 0);
@@ -173,7 +281,23 @@ foreach($rows as $data)
 		$processus=$data['LibelleProcessus'];
 		$i=$i+1;
 		$pdf->SetX(30);
-		$pdf->Cell(15,4,'',1,0,'');
+		$ref=false;
+		foreach($rowsRef as $data1)
+		{
+			if($data['CODEACTIVITE']==$data1['codeactivite'] and $data1['nbRef']>0)
+			{	
+				$ref=true;
+			}
+		}
+		if($ref)
+		{
+			$pdf->Cell(15,4,'X',1,0,'');
+		}
+		else
+		{
+			$pdf->Cell(15,4,'',1,0,'');
+		}
+		
 		$pdf->SetDrawColor(235 , 235 , 235 );
 		$pdf->Cell(25,4,'',1,0,'');
 		$pdf->SetDrawColor(0, 0, 0);
@@ -199,7 +323,23 @@ foreach($rows as $data)
 		$processus=$data['LibelleProcessus'];
 		$i=$i+1;
 		$pdf->SetX(30);
-		$pdf->Cell(15,4,'',1,0,'');
+		$ref=false;
+		foreach($rowsRef as $data1)
+		{
+			if($data['CODEACTIVITE']==$data1['codeactivite'] and $data1['nbRef']>0)
+			{	
+				$ref=true;
+			}
+		}
+		if($ref)
+		{
+			$pdf->Cell(15,4,'X',1,0,'');
+		}
+		else
+		{
+			$pdf->Cell(15,4,'',1,0,'');
+		}
+		
 		$pdf->SetDrawColor(235 , 235 , 235 );
 		$pdf->Cell(25,4,'',1,0,'');
 		$pdf->SetDrawColor(0, 0, 0);

@@ -1,6 +1,9 @@
-
+	<?php
+		
+		if(isset($_SESSION['situationCourante']) and $_SESSION['situationCourante']<>0 )
+		{
+		?>
 <html>
-<!-- code situation non gerer -->
 <script>
 function Enregistrer(){
 	var activite = new Array();
@@ -24,7 +27,7 @@ xmlhttp.onreadystatechange=function()
 		
 	}
 }
-xmlhttp.open("POST", "enregistrerActivite", true);
+xmlhttp.open("POST", "page/situation/enregistrer.php", true);
 xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 xmlhttp.send("activite=" + activite);
 
@@ -60,7 +63,7 @@ while($donnees1 = $req1->fetch())
 	option.value = "'.$donnees['codeactivite'].'";
 	document.getElementById(\'insert\').add(option);
 	option = document.createElement("option");;';	echo('		document.getElementById("reformuler-"+choixa).innerHTML += "'.$donnees1['codecompetence']." ".$donnees1['libelle'].'<br/>";	');	
-}echo('	document.getElementById("reformuler-"+choixa).innerHTML += "<label for=\""+choixa+"\">Votre reformulation de cette activité</label><input id=\""+choixa+"\" name=\""+choixa+"\" class=\"reformuler\"></input>";');
+}echo('	document.getElementById("reformuler-"+choixa).innerHTML += "<label for=\""+choixa+"\">Votre reformulation de cette activité</label><input id=\"activite["+choixa+"]\" name=\"activite["+choixa+"]\" class=\"reformuler\"></input>";');
 echo'option.text = "------------------";
 option.value="'.$donnees['codeactivite'].'";
 option.disabled = true;
@@ -110,15 +113,16 @@ function Supprimer()
 			apparaisse(nt) dans la liste des "Activités mises en œuvre". Les compétences correspondantes sont alors indiquées dans la liste des "Compétences". </p>
 			
 		<p>Activités du référentiel:</p>
-		
+	
 		<select name="select" size="10" STYLE="width:900" onchange="modif();">
 		
 <?php
+
 	$req="SELECT codeactivite, codeprocessus, libelle FROM activite order by codeactivite";
 	$reponse = $db->query($req);
 	$processus = "";
 	
-	$req1="select codeactivite from mettre_en_oeuvre";
+	$req1="select codeactivite from mettre_en_oeuvre where codesituation=".$_SESSION['situationCourante'];//modif
 	$reponse1=$db->query($req1);
 	$donnees1=$reponse1->fetchall();
 	while($donnees = $reponse->fetch())
@@ -162,7 +166,7 @@ function Supprimer()
 	<div  >
 		<select name="insert" id="insert" size="10" STYLE="width:900">
 		<?php
-	$req="SELECT codeactivite FROM mettre_en_oeuvre order by codeactivite";
+	$req="SELECT codeactivite FROM mettre_en_oeuvre where codesituation=".$_SESSION['situationCourante']." order by codeactivite";
 	$reponse = $db->query($req);
 	$processus = "";
 	while($donnees = $reponse->fetch())
@@ -188,4 +192,13 @@ function Supprimer()
 	</body>
 
 </html>
+
+<?php
+}
+		else
+		{
+			echo "<font color='red'>Aucune situation en cour</font>";
+		}
+
+?>
 

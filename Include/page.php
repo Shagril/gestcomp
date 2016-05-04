@@ -26,7 +26,7 @@
 
 	{
 
-		switch($_GET['page'])
+		switch($page[0])
 
 		{
 
@@ -82,7 +82,7 @@
 
 	{
 
-		switch($_GET['page'])
+		switch($page[0])
 
 		{
 
@@ -191,6 +191,12 @@
 				require("Page/settings-eleve.php");
 
 				break;
+				
+			case 'situationTest':
+			
+				require("Page/situationTest.php");
+				
+				break;
 
 			/*
 
@@ -220,7 +226,7 @@
 
 	{
 
-		switch($_GET['page'])
+		switch($page[0])
 
 		{
 
@@ -290,12 +296,6 @@
 
 			*/
 
-			case 'listeAnnee':
-
-				require("Page/listeannee.php");
-
-				break;
-
 			case 'listeEtudiant':
 
 				require("Page/listeEtudiant.php");
@@ -324,7 +324,19 @@
 
 				require("Page/settings-prof.php");
 
+				break;
 				
+			case 'redirectionListePromotion' :
+			
+				require("Page/redirectionListePromotion.php");
+				
+				break ;
+				
+			case 'visualiserSituation':
+			
+				require("page/visualiserSituation.php");
+				
+				break ;
 
 			/*
 
@@ -350,7 +362,7 @@
 
 	{
 
-		switch($_GET['page'])
+		switch($page[0])
 
 		{
 
@@ -419,13 +431,25 @@
 				On permet aux professeurs, admin ou non, de lister les promotions.
 
 			*/
+			case 'creerPromotion' :
+			
+			require("Page/CreationPromotions.php");
+			
+			break;
+			
 
-			case 'listePromotion':
+			case 'listePromotionAdmin':
 
-				require("Page/listepromotion.php");
+				require("Page/listePromotionAdmin.php");
 
 				break;
-
+				
+			case 'descriptionPromotion':
+			
+				require("Page/descriptionPromotion.php");
+				
+				break;
+					
 			case 'affichePromotion':
 
 				require("Page/promotion.php");
@@ -478,6 +502,13 @@
 
 				require('Page/creerEtudiant.php');
 
+				break;
+				
+				
+			case 'supprimerPromotion':
+			
+				require('Page/supprimerPromotion.php');
+				
 				break;
 
 			/*

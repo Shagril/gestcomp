@@ -1,18 +1,1 @@
-﻿<?php
-
-	$bdd = db_connect();
-	
-	$req = $bdd->prepare('select nom , codepromotion from promotion');
-	$req -> execute();
-	
-	echo 'Liste des promotions:';
-	while ($donnees = $req->fetch())
-	{
-		echo'<form name="formulaire" method="POST" action="promotion.php">
-			<tr>
-			<input type="hidden" name="promotion" size="20" value="'.$donnees['codepromotion'].'" />
-			<td><input type="submit" style="border:none; background:none; cursor:pointer; text-decoration:underline; color:blue" value="'.$donnees['nom'].'"</td>
-			</tr>
-			</form>';
-	}
-?>
+﻿<style>.accordion>form#promotion>.frame:first-child {    margin-top: 0;}.accordion>form#promotion>.frame {    margin-top: 1px;}.accordion>form#promotion>.frame>.heading {    display: block;    padding: 8px 16px 8px 20px;    background-color: #f6f6f6;    cursor: pointer;    font-size: .6875rem;    text-transform: uppercase;    font-weight: 700;    position: relative;    overflow: hidden;    z-index: 2;    -webkit-user-select: none;    -moz-user-select: none;    -ms-user-select: none;    user-select: none;    transition: all .3s ease;}.accordion>form#promotion>.frame.active>.heading {    background-color: #1ba1e2;    border-color: #1ba1e2;    color: #fff;    box-shadow: -1px 6px 6px -6px rgba(0,0,0,.35);    text-shadow: 2px 2px 4px rgba(0,0,0,.4);    transition: all .3s ease;}.accordion>form#promotion>.frame>.heading:hover {    background-color: #eee;}.accordion>form#promotion>.frame>.content {    padding: .625rem;    display: none;    background-color: #fff;    z-index: 1;}</style><?php		$bdd = db_connect();	$req = $bdd->prepare('select nom , codepromotion from promotion');	$req -> execute();		echo"<center>";	echo 'Liste des promotions:';	echo"<form action='listePromotion' method='post' id='promotion'>";	echo"<select name='choixPromotion' id='choixPromotion'>";	while ($donnees = $req->fetch())	{		echo"<option value=".$donnees['codepromotion'].">".$donnees['nom']."</option>";	}	echo"</select>";	echo"<input type='submit' text='test' name='Choix' value='Choix'/>";	echo"</form>";	echo"</center>";			if(isset($_POST['choixPromotion']))	{	$req = $bdd->prepare('SELECT nom, prenom, e.maillogin from etudiant e, utilisateur u where e.maillogin=u.maillogin and codepromotion='.$_POST['choixPromotion']); 	$req->execute();				echo"<div class='accordion' data-role='accordion' data-close-any='true' style='margin-left:20% ; margin-right:20%;'>";	while ($donnees = $req->fetch())	{		echo"<form action='redirectionListePromotion' method='post' id='promotion'>";		echo"<div class='frame'>";		echo"<div class='heading'> <font size='15'>".$donnees['nom']." ".$donnees['prenom']."</font></div>";		$req1 = $bdd->prepare("SELECT libelle, codesituation from situation where codeutilisateur='".$donnees['maillogin']."'"); 		$req1->execute();				while ($donnees1 = $req1->fetch())		{			echo"<div class='content' style='display: none;'>";			echo"<a href='http://127.0.0.1/gestcomp-master/visualiserSituation-".$donnees1['codesituation']."'>".$donnees1['libelle']."</a>";			echo"</div>";		}		echo"<div class='content' style='display: none;'>";		echo"<input type='hidden' name='email' value='".$donnees['maillogin']."'>";		echo"<input type='submit' name='bilans' value='bilans'/><input type='submit' name='synthèse' value='synthèse'/>";		echo"</div>";		echo"</div>";		echo"</form>";	}	echo"</div>";	?><?php	}	?>

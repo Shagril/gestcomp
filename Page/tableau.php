@@ -1,2 +1,0 @@
-<!--<embed width="100%" height="78%" src="http://gestcomp.shagril.tk/Include/lib/html2pdf/generate/tableau.php" type="application/pdf">-->
-<iframe allowfullscreen webkitallowfullscreen mozallowfullscreen style="display:block; width:100%; height:78%; " src="/Include/lib/html2pdf/generate/tableau.php"></iframe>

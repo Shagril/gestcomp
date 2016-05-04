@@ -5,10 +5,15 @@
 	else
 		$user = $_SESSION['email'];
 	
-	$sql = 'SELECT s.codeSituation, s.libelle, count(c.codeSituation) AS \'nbCommentaires\'
+	// $sql = 'SELECT s.codeSituation, s.libelle, count(c.codeSituation) AS \'nbCommentaires\'
+			// FROM situation s
+				// LEFT JOIN commenter c
+					// ON c.codeSituation = s.codeSituation';
+					
+						$sql = 'SELECT s.codeSituation, s.libelle, count(m.codeSituation) AS \'nbActivite\'
 			FROM situation s
-				LEFT JOIN commenter c
-					ON c.codeSituation = s.codeSituation';
+				LEFT JOIN mettre_en_oeuvre m
+					ON m.codeSituation = s.codeSituation';
 	
 	if(isset($user))
 	{
@@ -26,13 +31,14 @@
 
 	if($query->rowCount() != 0)
 	{
-		echo('<table border=1>');
+		echo('<table border=1 style="margin:auto;">');
 		while($data = $query->fetch())
 		{
-			echo('<tr><td>'.$data['codeSituation'].'</td><td>'.$data['libelle'].'</td><td>'.$data['nbCommentaires'].'<td>
-					<form action= "./addSituation" method="POST">
-						<input type="hidden" name="situation" value="'.$data['codeSituation'].'">
-						<input type="submit" text="test" value="Modifier"/>
+			echo('<tr><td>'.$data['codeSituation'].'</td><td>'.$data['libelle'].'</td><td>activité('.$data['nbActivite'].')<td>
+					<form action= "./situationTest" method="POST">
+						<input type="hidden" name="ModifSituation" value="'.$data['codeSituation'].'">
+						<input type="submit" text="test" name="modifier" value="Modifier"/>
+						<input type="submit" text="test" name="supprimer" value="Supprimer"/>
 					</form>
 				</td><tr>');
 		}

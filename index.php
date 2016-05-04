@@ -1,4 +1,8 @@
 <html>
+<script src="Include/js/jquery-1.10.2.min.js"></script>
+<script src="Include/js/bootstrap.js"></script>
+<script src="Include/js/metro.js"></script>
+
 	<head>
 		<?php 
 			/*
@@ -77,7 +81,6 @@
 		le script se chargent.
 		On charge JQuery et l'extention javascript de Bootstrap.
 	-->
-	<script src="Include/js/jquery-1.10.2.min.js"></script>
-	<script src="Include/js/bootstrap.js"></script>
+	
 	
 </html>
